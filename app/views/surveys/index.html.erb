@@ -1,0 +1,53 @@
+  <% if current_user.admin? %>
+  <table class="table table-hover">
+    <thead>
+      <ul>
+        <tr>  </tr>
+      </thead>
+
+      <%# byebug %>
+      <% @surveys.each do |f| %>
+      <tr>
+        <td><%= f.name %></td>
+        <td><% f.questions.each do |question| %></td>
+        <td><h4><%= question.content %></h4></td>
+        <% end %> 
+
+        <td><%= link_to 'Show', survey_path(f), :class => 'btn btn-success ' %>
+        </td>
+
+        <td><%= link_to 'Destroy', survey_path(f), method: :delete, data: { confirm: 'are you sure'}, :class => 'btn btn-danger ' %></td>
+      </tr>
+    </ul>
+    <% end %>
+  </table>
+  <br>
+  <td><%= link_to 'New survey', new_survey_path, :class => 'btn btn-primary '%></td>
+
+
+  <% else current_user.try(:admin?) %>
+
+  <table class="table table-hover">
+    <thead>
+      <ul>
+       <tr>
+       </tr>
+     </thead>
+
+     <%# byebug %>
+     <% @surveys.each do |f| %>
+     <tr>
+      <td><%= f.name %></td>
+      <td><% f.questions.each do |question| %></td>
+      <td><h4><%= question.content %></h4></td>
+      <% end %> 
+
+      <td><%= link_to 'test', survey_path(f), :class => 'btn btn-success ' %>
+      </td>
+    </tr>
+  </ul>
+  <% end %>
+</thead>
+</table>
+
+<% end %>

@@ -1,0 +1,19 @@
+<% if current_user.admin? %>
+<fieldset>
+  <%= f.label :content, "Answer" %>
+  <%= f.text_field :content %>
+  <%= f.label :_destroy, "Remove Answer" %>
+    <%= f.check_box :is_correct %>
+    <%= f.label :is_correct, "correct Answer"%>
+ </fieldset>
+
+<!-- <script >
+	if(document.getElementById('radio1').checked) {
+} else if(document.getElementById('radio2').checked) {
+} else {
+  alert ("You must select a button");
+  return false;
+}
+</script> -->
+<% else current_user.try(:admin?) %>
+<% end %>

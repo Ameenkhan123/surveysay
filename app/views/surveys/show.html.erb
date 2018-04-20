@@ -1,0 +1,81 @@
+<% if current_user.admin? %>
+<style >
+
+
+</style>
+<p>
+	<strong>Name:</strong>
+	<br>
+	<%= @survey.try(:name) %>
+</p>
+
+<ol >
+	<% for question in @survey.questions %>
+	<li >
+		<%= question.content %> 
+		<ul style="list-style: none;">
+			<% for answer in question.answers %>
+			<li>
+				<%= answer.content %> 
+				<% end %>
+			</li>
+		</ul>
+		<% end %>
+	</ol>
+
+	<p>		
+
+		<%= link_to 'edit', edit_survey_path(@survey), :class => 'btn btn-info '  %>
+
+		<%= link_to 'Destroy', @survey, method: :delete, data: { confirm: 'are you sure'}, :class => 'btn btn-danger ' %>
+
+		<%= link_to 'back', surveys_path, :class => 'btn btn-info '  %>
+
+	</p>
+
+
+
+	<% else current_user %>
+<p>
+		<strong>Name:</strong>
+		<br>
+		<%= form_for :result, url: :result_surveys, method: :post do |f| %>
+		<% if @survey.errors.any? %>
+				<div id="error_explanation">
+					<h2><%= pluralize(@survey.errors.count, "error") + " prohibited this survey from being saved" %></h2>
+					<ul>
+						<% @survey.errors.full_messages.each do |message| %>
+						<li><%= message %></li>
+						<% end %>
+					</ul>
+				</div>
+		<% end %>
+				<strong>Name:</strong>
+				<br>
+				<%= @survey.try(:name) %>
+			</p>
+<ol >
+    <%= f.hidden_field :survey_id, value: @survey.id %>
+		<% for question in @survey.questions %>
+		<li >
+			<%= question.content %> 
+			<ul style="list-style: none;">
+			<%= f.fields_for :questions do |form|%>
+				<% question.answers.each do |answer| %>
+				<li>
+					
+					<%= form.radio_button "#{question.id}", answer.id   %>
+					<%= answer.content %> 
+					<% end %>
+				</li>
+			</ul>
+			<% end %>
+			<% end %>
+		</ol>
+
+		<div class="actions" >
+			<%= submit_tag %>
+		</div>
+		<% end %>
+		<%= link_to 'back', surveys_path, :class => 'btn btn-info '  %>
+<% end %>
